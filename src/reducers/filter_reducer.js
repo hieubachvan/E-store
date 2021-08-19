@@ -62,10 +62,64 @@ const filter_reducer = (state, action) => {
     return { ...state, filters: { ...state.filters, [name]: value } };
   }
   if (action.type === FILTER_PRODUCTS) {
-    // let tempProducts = state.filtered_products.filter((item) => {
-    //   return (item[state.name] = state.value);
-    // });
-    return { ...state };
+    const { all_products } = state;
+    const { text, category, company, color, price, shipping } = state.filters;
+
+    let tempProducts = [...all_products];
+    // filteringe
+    // text
+    if (text) {
+      tempProducts = tempProducts.filter((product) => {
+        return product.name.toLowerCase().startsWith(text);
+      });
+    }
+    // category
+    if (category !== "all") {
+      tempProducts = tempProducts.filter((product) => {
+        return product.category === category;
+      });
+    }
+    // company
+    if (company !== "all") {
+      tempProducts = tempProducts.filter((product) => {
+        return product.company === company;
+      });
+    }
+    // color
+    // vì phần màu sắc phải đi vào chi tiết từng sản phẩm nên filter để
+    // duyệt qua sp , sau đó dùng find để tìm trong sp đó có màu đó ko nếu có thì trả về true , lấu ra bởi filter
+    if (color !== "all") {
+      tempProducts = tempProducts.filter((product) => {
+        return product.colors.find((c) => c === color);
+      });
+    }
+    // Price
+
+    tempProducts = tempProducts.filter((product) => {
+      return product.price <= price;
+    });
+    // shipping
+    if (shipping) {
+      tempProducts = tempProducts.filter((product) => {
+        return product.shipping === shipping;
+      });
+    }
+
+    return { ...state, filtered_products: tempProducts };
+  }
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: "",
+        company: "all",
+        category: "all",
+        color: "all",
+        price: state.filters.max_price,
+        shipping: false,
+      },
+    };
   }
   return state;
   throw new Error(`No Matching "${action.type}" - action type`);
