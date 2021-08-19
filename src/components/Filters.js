@@ -1,12 +1,114 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useFilterContext } from '../context/filter_context'
-import { getUniqueValues, formatPrice } from '../utils/helpers'
-import { FaCheck } from 'react-icons/fa'
+import React from "react";
+import styled from "styled-components";
+import { useFilterContext } from "../context/filter_context";
+import { getUniqueValues, formatPrice } from "../utils/helpers";
+import { FaCheck } from "react-icons/fa";
 
 const Filters = () => {
-  return <h4>filters</h4>
-}
+  const {
+    filters: { text, category, company, color, min_price, shipping },
+    updateFilters,
+    clearFilters,
+    all_products,
+  } = useFilterContext();
+  // const a = all_products.map((item) => item.category);
+  // const categories = Array.from(new Set(a));
+  // console.log(categories);
+  const categories = getUniqueValues(all_products, "category");
+  const companies = getUniqueValues(all_products, "company");
+  const colors = getUniqueValues(all_products, "colors");
+
+  return (
+    <Wrapper>
+      <div className="content">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="form-control">
+            <input
+              type="text"
+              name="text"
+              className="search-input"
+              placeholder="Search"
+              value={text}
+              onChange={updateFilters}
+            />
+          </div>
+          <div className="form-control">
+            <h5>Category</h5>
+            <div>
+              {categories.map((item, index) => {
+                return (
+                  <button
+                    onClick={updateFilters}
+                    key={index}
+                    type="button"
+                    className="null"
+                    name="category"
+                    // eslint-disable-next-line react/jsx-no-duplicate-props
+                    className={`${
+                      category === item.toLowerCase() ? "active" : null
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="form-control">
+            <h5>Company</h5>
+            <select name="company" className="company" onChange={updateFilters}>
+              {companies.map((item, index) => {
+                return (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="form-control">
+            <h5>Colors</h5>
+            <div className="colors">
+              {colors.map((c, index) => {
+                if (c === "all") {
+                  return (
+                    <button
+                      key={index}
+                      name="color"
+                      onClick={updateFilters}
+                      data-color="all"
+                      className={`${
+                        color === "all" ? "all-btn active" : "all-btn"
+                      }`}
+                    >
+                      all
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    onClick={updateFilters}
+                    key={index}
+                    name="color"
+                    data-color={c}
+                    style={{ background: c }}
+                    className={`${
+                      color === c ? "color-btn active" : "color-btn"
+                    }`}
+                  >
+                    {color === c && <FaCheck />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="form-control"></div>
+          <div className="form-control shipping"></div>
+        </form>
+      </div>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   .form-control {
@@ -105,6 +207,6 @@ const Wrapper = styled.section`
       top: 1rem;
     }
   }
-`
+`;
 
-export default Filters
+export default Filters;

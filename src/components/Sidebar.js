@@ -1,16 +1,47 @@
-import React from 'react'
-import logo from '../assets/logo.svg'
-import { Link } from 'react-router-dom'
-import { useProductsContext } from '../context/products_context'
-import { FaTimes } from 'react-icons/fa'
-import { links } from '../utils/constants'
-import styled from 'styled-components'
-import CartButtons from './CartButtons'
-import { useUserContext } from '../context/user_context'
+import React from "react";
+import logo from "../assets/logo.svg";
+import { Link } from "react-router-dom";
+import { useProductsContext } from "../context/products_context";
+import { FaTimes } from "react-icons/fa";
+import { links } from "../utils/constants";
+import styled from "styled-components";
+import CartButtons from "./CartButtons";
+import { useUserContext } from "../context/user_context";
 
 const Sidebar = () => {
-  return <h4>sidebar</h4>
-}
+  const { isSidebarOpen, closeSidebar } = useProductsContext();
+  // console.log(data);
+  // const isSidebarOpen = false;
+  return (
+    <SidebarContainer>
+      <aside
+        className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
+      >
+        <div className="sidebar-header">
+          <img src={logo} alt="Logo" className="logo" />
+          <button onClick={closeSidebar} className="close-btn">
+            <FaTimes />
+          </button>
+        </div>
+        <ul className="links">
+          {links.map((link) => {
+            return (
+              <li key={link.id}>
+                <Link onClick={closeSidebar} to={link.url}>
+                  {link.text}
+                </Link>
+              </li>
+            );
+          })}
+          <Link onClick={closeSidebar} to="/checkout/">
+            Checkout
+          </Link>
+        </ul>
+        <CartButtons />
+      </aside>
+    </SidebarContainer>
+  );
+};
 
 const SidebarContainer = styled.div`
   text-align: center;
@@ -81,6 +112,6 @@ const SidebarContainer = styled.div`
       display: none;
     }
   }
-`
+`;
 
-export default Sidebar
+export default Sidebar;

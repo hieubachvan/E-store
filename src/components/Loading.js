@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Loading = () => {
-  return <h4>loading element</h4>
-}
+  return (
+    <main className="page-100">
+      <div className=" loading"></div>;
+    </main>
+  );
+};
 
-export default Loading
+export default Loading;
