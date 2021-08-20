@@ -46,7 +46,9 @@ export const CartProvider = ({ children }) => {
   // toggle amount
   const toggleAmount = (id, value) => {};
   // cleaar cartItem
-  const clearCart = () => {};
+  const clearCart = () => {
+    dispatch({ type: CLEAR_CART });
+  };
 
   //  mỗi khi cart thay đổi thì lưu nó vào local storage
 
