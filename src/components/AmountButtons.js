@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
-const AmountButtons = ({ increase, decrease, amount }) => {
+const AmountButtons = ({ increase, decrease, amount, id }) => {
   return (
     <Wrapper className="amount-btns">
-      <button className="amount-btn" type="button" onClick={decrease}>
+      <button className="amount-btn" type="button" onClick={() => decrease(id)}>
         <FaMinus />
       </button>
       <h2>{amount}</h2>
-      <button className="amount-btn" type="button" onClick={increase}>
+      <button className="amount-btn" type="button" onClick={() => increase(id)}>
         <FaPlus />
       </button>
     </Wrapper>

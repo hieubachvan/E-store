@@ -44,21 +44,40 @@ export const CartProvider = ({ children }) => {
   };
 
   // toggle amount
-  const toggleAmount = (id, value) => {};
+  const toggleAmount = (id, value) => {
+    dispatch({ type: TOGGLE_CART_ITEM_AMOUNT, payload: { id, value } });
+    // console.log(id, value);
+  };
+
   // cleaar cartItem
   const clearCart = () => {
     dispatch({ type: CLEAR_CART });
   };
 
+  // const countCartTotals = () => {
+  //   const count = state.cart.reduce((total, item) => {
+  //     return total + item.amount;
+  //   }, 0);
+  //   dispatch({ type: COUNT_CART_TOTALS, payload: count });
+  // };
+
   //  mỗi khi cart thay đổi thì lưu nó vào local storage
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
+    // dispatch({ type: COUNT_CART_TOTALS });
   }, [state.cart]);
+  // console.log(state);
 
   return (
     <CartContext.Provider
-      value={{ ...state, addToCart, removeItem, toggleAmount, clearCart }}
+      value={{
+        ...state,
+        addToCart,
+        removeItem,
+        toggleAmount,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
