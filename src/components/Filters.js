@@ -9,7 +9,7 @@ const Filters = () => {
     filters: {
       text,
       category,
-      company,
+      // company,
       color,
       min_price,
       price,
